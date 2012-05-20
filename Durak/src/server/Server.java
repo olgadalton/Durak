@@ -14,9 +14,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import javax.swing.*;
 import session.Gamer;
+import session.active.AllSessions;
 
 public class Server extends JFrame implements ActionListener {
 	
+        AllSessions sessions;
 	private static final Integer serverPort = 8080;
         private static ServerSocket server;
         private BufferedReader input;
@@ -79,9 +81,11 @@ public class Server extends JFrame implements ActionListener {
             try {
                 while(true) {
                     
+                    sessions = new AllSessions();
+                    
                     Socket sock = server.accept();
                     
-                    Gamer gamer = new Gamer(sock, null);
+                    Gamer gamer = new Gamer(sock, sessions);
                     
                     display.append("New client connection established " + 
                             sock.toString());

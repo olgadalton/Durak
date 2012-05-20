@@ -5,17 +5,21 @@
 package ui.enter;
 
 import javax.swing.JOptionPane;
+import session.GamerClient;
 
 /**
  *
  * @author Olga
  */
-public class Login extends javax.swing.JFrame {
-    
+public class LoginForm extends javax.swing.JPanel {
+
+    private GamerClient handler;
     /**
-     * Creates new form Login
+     * Creates new form LoginForm
      */
-    public Login() {
+    public LoginForm(GamerClient clientHandler) {
+        
+        this.handler = clientHandler;
         initComponents();
     }
 
@@ -28,32 +32,18 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
-        nameTextField = new javax.swing.JTextField();
-        nameLabel = new javax.swing.JLabel();
         identifyButton = new javax.swing.JButton();
-
-        jLabel1.setText("jLabel1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
+        nameLabel = new javax.swing.JLabel();
+        nameTextField = new javax.swing.JTextField();
 
         titleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         titleLabel.setText("Welcome to Durak Online! Please identify yourself... ");
 
-        nameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameTextFieldActionPerformed(evt);
-            }
-        });
-
-        nameLabel.setText("Your name");
-
         identifyButton.setText("Enter");
         identifyButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                enterButtonMousePressed(evt);
+                identifyButtonenterButtonMousePressed(evt);
             }
         });
         identifyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -62,8 +52,16 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        nameLabel.setText("Your name");
+
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -91,70 +89,27 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(identifyButton)
                 .addContainerGap(220, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameTextFieldActionPerformed
+    private void identifyButtonenterButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_identifyButtonenterButtonMousePressed
+        if (nameTextField.getText().length() == 0) {
+            JOptionPane.showMessageDialog(this, "Please enter your name!");
+        } else {
+            handler.registerForGame(this.nameTextField.getText());
+        }
+
+    }//GEN-LAST:event_identifyButtonenterButtonMousePressed
 
     private void identifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identifyButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_identifyButtonActionPerformed
 
-    private void enterButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enterButtonMousePressed
-          if(nameTextField.getText().length() == 0)
-          {
-              JOptionPane.showMessageDialog(this, "Please enter your name!");
-          }
-          
-    }//GEN-LAST:event_enterButtonMousePressed
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextFieldActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton identifyButton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JLabel titleLabel;
