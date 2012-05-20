@@ -6,6 +6,7 @@ package ui.enter;
 
 import javax.swing.JOptionPane;
 import session.GamerClient;
+import ui.main.MainView;
 
 /**
  *
@@ -14,12 +15,14 @@ import session.GamerClient;
 public class LoginForm extends javax.swing.JPanel {
 
     private GamerClient handler;
+    private MainView parentFrame;
     /**
      * Creates new form LoginForm
      */
-    public LoginForm(GamerClient clientHandler) {
+    public LoginForm(GamerClient clientHandler, MainView frame) {
         
         this.handler = clientHandler;
+        this.parentFrame = frame;
         initComponents();
     }
 
@@ -95,6 +98,7 @@ public class LoginForm extends javax.swing.JPanel {
         if (nameTextField.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "Please enter your name!");
         } else {
+            parentFrame.showWaitingView();
             handler.registerForGame(this.nameTextField.getText());
         }
 

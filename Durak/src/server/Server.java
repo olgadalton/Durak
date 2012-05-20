@@ -78,17 +78,18 @@ public class Server extends JFrame implements ActionListener {
             display.setText("Server waiting for client on port " +
 			       server.getLocalPort() + "\n");
             
+                                
+            sessions = new AllSessions();
+            
             try {
                 while(true) {
                     
-                    sessions = new AllSessions();
-                    
                     Socket sock = server.accept();
                     
-                    Gamer gamer = new Gamer(sock, sessions);
-                    
                     display.append("New client connection established " + 
-                            sock.toString());
+                                                  sock.toString() + "\n");
+                    
+                    Gamer gamer = new Gamer(sock, sessions);
                 }
             }
             catch(IOException e){}

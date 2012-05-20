@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JApplet;
 
@@ -16,8 +17,11 @@ public class Gamer extends Thread {
 	private AllSessions sessions;
 	private BufferedReader netIn;
 	private PrintWriter netOut;
-        private JApplet mainApplet;
         private String clientName;
+
+        public String getClientName() {
+            return clientName;
+        }
 
 	public Gamer(Socket sock, AllSessions otherGamers) throws IOException {
 		super();
@@ -47,25 +51,41 @@ public class Gamer extends Thread {
                                 (HashMap<String, Object>) 
                                 JSONUtil.decodeJson(message);
                         
-                        System.out.println("obj" + obj);
-                        
-                        if(obj.get("action").equals("regAndStartGame")) {
-                            System.out.println("action " + obj.get("action"));
-                            this.clientName = (String) obj.get("client");
-                            System.out.println("Client name " + this.clientName);
-                            boolean canPlay = this.sessions.addGamer(this);
-                            System.out.println("can play " + canPlay);
-                            HashMap<String, Object> responseData = new HashMap<>();
+                        if(obj.get("action").equals("regAndStartGame") ||
+                                obj.get("action").equals("check")) {
+                            
+                            ArrayList<String> players = null;
+                            
+                            if(obj.get("action").equals("regAndStartGame")) {
+                            
+                                this.clientName = (String) obj.get("client");
+                                players = this.sessions.addGamer(this);
+                                
+                            }
+                            else if(obj.get("action").equals("check")) {
+                            
+                                players = this.sessions.checkOtherGamers(this);
+                            }
+                            
+                            boolean enough = false;
+                            
+                            if(players.isEmpty() == false) {
+                                enough = true;
+                            }
+                            
+                            HashMap<String, Object> responseData = 
+                                    new HashMap<>();
+                            
                             responseData.put("status", "wait");
-                            responseData.put("enough", canPlay);
-                            String response = this.composeResponse(responseData);
-                            System.out.println("response " + response);
+                            responseData.put("enough", enough);
+                            responseData.put("players", players);
+                            String response = this.composeResponse(
+                                                            responseData);
+                            
                             this.netOut.println(response);
                         }
                     } 
                     catch (Exception ex) {}
-                    
-                    System.out.println(message);
                     
                 }
             }

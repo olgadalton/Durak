@@ -10,7 +10,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JFrame;
+import ui.main.MainView;
 import utils.JSONUtil;
 
 /**
@@ -24,8 +27,11 @@ public class GamerClient extends Thread {
     private String clientName;
     private final static Integer PORT = 8080;
     private final static String HOST = "localhost";
+    private MainView delegate;
     
-    public GamerClient(){
+    public GamerClient(MainView _delegate){
+        
+        this.delegate = _delegate;
         
         try {
             this.socket = new Socket(HOST, PORT);
@@ -66,17 +72,15 @@ public class GamerClient extends Thread {
                                     response.get("server");
                         
                         if(responseData.get("status").equals("wait")) {
-                            if(responseData.get("enough") == true) {
-                                System.out.println("Can start game!");
-                            }
-                            else {
-                                System.out.println("Can't start game!");
-                            }
+                            
+                            this.delegate.updateWaitingView(
+                            (ArrayList<String>) responseData.get("players"));
+                                    
+                                    this.output.println(
+                                            this.doServerRequest("check"));
                         }
                     }
                     catch(Exception ex) {}
-                    
-                    System.out.println(message);
                     
                 }
             }

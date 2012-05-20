@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.UUID;
 import session.Game;
 import constants.Constants;
+import java.util.*;
 
 import session.Gamer;
 
@@ -15,7 +16,7 @@ public class AllSessions {
         
         private Collection<Game> games = new ArrayList<Game>();
 	
-	public synchronized boolean addGamer(Gamer g) {
+	public synchronized ArrayList<String> addGamer(Gamer g) {
             
 		this.sessions.add(g);
                 
@@ -41,20 +42,51 @@ public class AllSessions {
                     this.games.add(playersGame);
                     playersGame.addGamer(g);
                 }
-                
-                if(playersGame.getPlayersCount() >= Constants.MinPlayersCount) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+
+                return this.otherGamersNames(g, playersGame);
 	}
+        
+        public synchronized ArrayList<String> checkOtherGamers(Gamer g) {
+            
+            Game playersGame = null;
+            
+            for(Game gm : this.games) {
+                if(gm.containsGamer(g)) {
+                    playersGame = gm;
+                    break;
+                }
+            }
+            
+            if(playersGame != null) {
+                return this.otherGamersNames(g, playersGame);
+            }
+            else {
+                return new ArrayList<>();
+            }
+        }
 	
+        private ArrayList<String> otherGamersNames(Gamer thisGamer, Game g) {
+            
+            ArrayList<HashMap<String, Object>> gamers = g.getGamers();
+            
+            ArrayList<String> result = new ArrayList<>();
+            
+            for(HashMap h : gamers) {
+                Gamer gamer = (Gamer) h.get("player");
+                
+                if(gamer.equals(thisGamer) == false) {
+                    result.add(gamer.getClientName());
+                }
+            }
+            return result;
+        }
+        
+        
 	public Iterator<Gamer> iterator(){
 		return sessions.iterator();
 	}
         
-        public synchronized void addGame(Game g) {
+        private synchronized void addGame(Game g) {
             this.games.add(g);
         }
 }

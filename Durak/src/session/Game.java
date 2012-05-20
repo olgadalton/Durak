@@ -31,4 +31,19 @@ public class Game {
         System.out.println(player);
         gamers.add(player);
     }
+    
+    public ArrayList<HashMap<String, Object>> getGamers(){
+        return this.gamers;
+    }
+    
+    public boolean containsGamer(Gamer g) {
+        
+        for(HashMap<String, Object> hm: this.gamers) {
+            if(hm.get("player").equals(g)){
+                return true;
+            }
+        }
+        return false;
+    }
+            
 }
