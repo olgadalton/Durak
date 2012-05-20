@@ -16,4 +16,8 @@ public class AllSessions {
 	public Iterator<Gamer> iterator(){
 		return sessions.iterator();
 	}
+        
+        public boolean userExists(String name){
+            return false;
+        }
 }

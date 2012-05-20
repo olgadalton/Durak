@@ -1,12 +1,8 @@
 package session;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import javax.swing.JApplet;
 
 import session.active.AllSessions;
 public class Gamer extends Thread {
@@ -15,6 +11,7 @@ public class Gamer extends Thread {
 	private AllSessions sessions;
 	private BufferedReader netIn;
 	private PrintWriter netOut;
+        private JApplet mainApplet;
 
 	public Gamer(Socket sock, AllSessions otherGamers) throws IOException {
 		super();
@@ -25,22 +22,16 @@ public class Gamer extends Thread {
 		start();
 	}
 	
+        @Override
 	public void run() 
 	{
-		while(true)
-		{
-			netOut.println("Server already has an active player! Please try again later!");
-			
-			try 
-			{
-				// wait and exit
-				sleep(50000000);
-				this.socket.close();
-			} 
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
+            try {
+                while( true ) {
+                    
+                }
+            }
+            finally {
+                
+            }
 	}
 }
