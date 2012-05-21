@@ -84,13 +84,29 @@ public class Gamer extends Thread {
                             
                             this.netOut.println(response);
                         }
+                        else if(obj.get("action").equals("justStartGame")) {
+                            
+                            boolean result = this.sessions.gamerStartsGame(this);
+                            
+                            HashMap<String, Object> responseData = 
+                                    new HashMap<>();
+                            
+                            responseData.put("status", "startStatus");
+                            responseData.put("otherStarted", result);
+                            
+                            String response = this.composeResponse(responseData);
+                            
+                            this.netOut.println(response);
+                        }
                     } 
                     catch (Exception ex) {}
                     
                 }
             }
             
-            catch(IOException ex) {}
+            catch(IOException ex) {
+                this.sessions.removePlayer(this);
+            }
             
             finally {
                 

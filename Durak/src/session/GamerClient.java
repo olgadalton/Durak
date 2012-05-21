@@ -12,6 +12,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import ui.main.MainView;
 import utils.JSONUtil;
@@ -55,6 +57,13 @@ public class GamerClient extends Thread {
         start();
     }
     
+    public void startGame() {
+        
+        this.output.println(
+                this.doServerRequest("justStartGame"));
+        
+    }
+    
     @Override
     public void run() {
             try {
@@ -79,6 +88,20 @@ public class GamerClient extends Thread {
                                     this.output.println(
                                             this.doServerRequest("check"));
                         }
+                        else if(responseData.get("status").equals("startStatus")) {
+                            
+                            if(responseData.get("otherStarted").equals(true)) {
+                                this.delegate.gameStartedOtherReady();
+                                // Do something else here????
+                            }
+                            else {
+                                this.delegate.gameStartedOtherNotReady();
+                                
+                                this.output.println(
+                                        this.doServerRequest("justStartGame"));
+                            }
+                            
+                        }
                     }
                     catch(Exception ex) {}
                     
@@ -86,9 +109,15 @@ public class GamerClient extends Thread {
             }
             catch(IOException ex) {}
             finally {
-                
+                try {
+                    socket.close();
+                } catch (IOException ex) {}
             }
 	}
+        
+        public void closeSocket() throws IOException{
+            this.socket.close();
+        }
     
         private String doServerRequest(Object message) {
             HashMap<String, Object> result = new HashMap<>();

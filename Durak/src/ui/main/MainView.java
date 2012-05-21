@@ -4,11 +4,15 @@
  */
 package ui.main;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import session.GamerClient;
 import ui.enter.LoginForm;
 import ui.enter.WaitForPlayersView;
+import ui.game.GameView;
 
 /**
  *
@@ -19,19 +23,35 @@ public class MainView extends JFrame {
     private GamerClient clientHandler;
     private LoginForm loginForm;
     private WaitForPlayersView waitView;
+    private GameView gameView;
     
     public MainView() {
         super();
         setup();
+        manageClose();
     }
     
-    public void setup() {
+    private void setup() {
         this.clientHandler = new GamerClient(this);
         loginForm = new LoginForm(clientHandler, this);
         add(loginForm);
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+    
+    private void manageClose(){
+        
+        this.addWindowListener(new WindowAdapter() {
+            
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    try {
+                        clientHandler.closeSocket();
+                    } 
+                    catch (IOException ex) {}
+                }
+            });
     }
     
     public void showWaitingView() {
@@ -44,10 +64,22 @@ public class MainView extends JFrame {
     
     public void updateWaitingView(ArrayList<String> players) {
         this.waitView.updateListView(players);
+        this.waitView.changeStartButtonState(!players.isEmpty());
     }
     
     public static void main(String[] args) {
         new MainView();
+    }
+    
+    public void gameStartedOtherNotReady() {
+        waitView.showWaitForOthersOnButton();
+    }
+    
+    public void gameStartedOtherReady() {
+        gameView = new GameView();
+        remove(waitView);
+        add(gameView);
+        setVisible(true);
     }
     
 }

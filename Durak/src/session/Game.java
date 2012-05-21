@@ -45,5 +45,43 @@ public class Game {
         }
         return false;
     }
+    
+    public boolean removeGamer(Gamer g) {
+        
+        HashMap<String, Object> hashMap = null;
+        
+        for(HashMap<String, Object> hm: this.gamers) {
+            if(hm.get("player").equals(g)){
+                hashMap = hm;
+            }
+        }
+        
+        if(hashMap != null) {
+            this.gamers.remove(hashMap);
+            return true;
+        }
+    
+        return false;
+    }
+    
+    public boolean gamerStartedGame(Gamer gamer) {
+        
+        for(HashMap<String, Object> hm : this.gamers) {
+            if(hm.get("player").equals(gamer)) {
+                hm.put("activated", true);
+                break;
+            }
+        }
+        
+        boolean allActivated = true;
+        
+        for(HashMap<String, Object> hm : this.gamers) {
+            if(hm.get("activated").equals(false)) {
+                allActivated = false;
+            }
+        }
+        
+        return allActivated;
+    }
             
 }

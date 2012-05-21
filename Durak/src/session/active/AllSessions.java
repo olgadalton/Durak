@@ -89,4 +89,26 @@ public class AllSessions {
         private synchronized void addGame(Game g) {
             this.games.add(g);
         }
+        
+        public synchronized void removePlayer(Gamer g) {
+            
+            this.sessions.remove(g);
+            
+            for(Game gm : this.games) {
+                if(gm.removeGamer(g) == true) {
+                    break;
+                }
+            }
+        }
+        
+        public synchronized boolean gamerStartsGame(Gamer g) {
+            
+            for(Game game : this.games) {
+                if(game.containsGamer(g)) {
+                    return game.gamerStartedGame(g);
+                }
+            }
+            
+            return false;
+        }
 }

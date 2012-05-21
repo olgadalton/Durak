@@ -5,6 +5,8 @@
 package ui.enter;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import session.GamerClient;
 
@@ -15,6 +17,12 @@ import session.GamerClient;
 public class WaitForPlayersView extends javax.swing.JPanel {
     
     private GamerClient clientHandler;
+    
+    private boolean buttonWithSpinner;
+    private Timer dummyTimer;
+    private static final String WAITTEXT = "Waiting for other users";
+    
+    private static int tick = 0;
 
     /**
      * Creates new form WaitForPlayersView
@@ -24,8 +32,42 @@ public class WaitForPlayersView extends javax.swing.JPanel {
         initComponents();
     }
     
+    public void showWaitForOthersOnButton() {
+        
+        if(buttonWithSpinner == false) {
+            
+            buttonWithSpinner = true;
+            dummyTimer = new Timer();
+            dummyTimer.schedule(new TimerTask() {
+
+                    public void run() {
+                        
+                    String buttonText = WAITTEXT;
+
+                    for(int i = 0; i < tick; i++) {
+                        buttonText = buttonText + ".";
+                    }
+                    
+                    tick++;
+
+                    if(tick > 7) {
+                        tick = 0;
+                    }
+
+                    startGameButton.setText(buttonText);
+                }
+            }, 0, 1000);
+        }
+    }
+    
     public void updateListView(ArrayList<String> namesList) {
-        this.jList1.setListData(new Vector(namesList));
+        this.playersList.setListData(new Vector(namesList));
+    }
+    
+    public void changeStartButtonState(boolean buttonEnabled) {
+        if(!buttonWithSpinner) {
+            this.startGameButton.setEnabled(buttonEnabled);
+        }
     }
 
     /**
@@ -37,23 +79,28 @@ public class WaitForPlayersView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        commentLabel = new javax.swing.JLabel();
+        otherPlayersLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
+        playersList = new javax.swing.JList();
+        startGameButton = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Setting up new game....");
+        commentLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        commentLabel.setText("Setting up new game....");
 
-        jLabel2.setText("Other players in this game so far: ");
+        otherPlayersLabel.setText("Other players in this game so far: ");
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(playersList);
 
-        jButton1.setText("Start game");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        startGameButton.setText("Start game");
+        startGameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                startGamePressed(evt);
+            }
+        });
+        startGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                startGameButtonActionPerformed(evt);
             }
         });
 
@@ -66,13 +113,13 @@ public class WaitForPlayersView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(commentLabel)
+                            .addComponent(otherPlayersLabel))
                         .addGap(0, 8, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(startGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,24 +128,28 @@ public class WaitForPlayersView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(commentLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
+                        .addComponent(otherPlayersLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(startGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(188, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_startGameButtonActionPerformed
+
+    private void startGamePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startGamePressed
+        this.clientHandler.startGame();
+    }//GEN-LAST:event_startGamePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JList jList1;
+    private javax.swing.JLabel commentLabel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel otherPlayersLabel;
+    private javax.swing.JList playersList;
+    private javax.swing.JButton startGameButton;
     // End of variables declaration//GEN-END:variables
 }
