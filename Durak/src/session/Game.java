@@ -13,7 +13,7 @@ import java.util.UUID;
  * @author Olga
  */
 public class Game {
-    private ArrayList<HashMap<String, Object>> gamers = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> gamers = new ArrayList<HashMap<String, Object>>();
     private UUID myID;
     
     public Game(UUID uID) {
@@ -25,7 +25,7 @@ public class Game {
     }
     
     public synchronized void addGamer(Gamer gamer) {
-        HashMap<String, Object> player = new HashMap<>();
+        HashMap<String, Object> player = new HashMap<String, Object>();
         player.put("activated", false);
         player.put("player", gamer);
         System.out.println(player);

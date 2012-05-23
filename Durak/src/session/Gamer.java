@@ -74,7 +74,7 @@ public class Gamer extends Thread {
                             }
                             
                             HashMap<String, Object> responseData = 
-                                    new HashMap<>();
+                                    new HashMap<String, Object>();
                             
                             responseData.put("status", "wait");
                             responseData.put("enough", enough);
@@ -89,7 +89,7 @@ public class Gamer extends Thread {
                             boolean result = this.sessions.gamerStartsGame(this);
                             
                             HashMap<String, Object> responseData = 
-                                    new HashMap<>();
+                                    new HashMap<String, Object>();
                             
                             responseData.put("status", "startStatus");
                             responseData.put("otherStarted", result);
@@ -118,7 +118,7 @@ public class Gamer extends Thread {
 	}
         
         private String composeResponse(Object message) {
-            HashMap<String, Object> result = new HashMap<>();
+            HashMap<String, Object> result = new HashMap<String, Object>();
             result.put("server", message);
             String json = JSONUtil.jsonEncode(result);
             return json;

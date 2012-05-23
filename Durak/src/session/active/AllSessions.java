@@ -61,7 +61,7 @@ public class AllSessions {
                 return this.otherGamersNames(g, playersGame);
             }
             else {
-                return new ArrayList<>();
+                return new ArrayList<String>();
             }
         }
 	
@@ -69,7 +69,7 @@ public class AllSessions {
             
             ArrayList<HashMap<String, Object>> gamers = g.getGamers();
             
-            ArrayList<String> result = new ArrayList<>();
+            ArrayList<String> result = new ArrayList<String>();
             
             for(HashMap h : gamers) {
                 Gamer gamer = (Gamer) h.get("player");

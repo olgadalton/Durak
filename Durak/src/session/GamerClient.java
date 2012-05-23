@@ -120,7 +120,7 @@ public class GamerClient extends Thread {
         }
     
         private String doServerRequest(Object message) {
-            HashMap<String, Object> result = new HashMap<>();
+            HashMap<String, Object> result = new HashMap<String, Object>();
             result.put("client", this.clientName);
             result.put("action", message);
             String json = JSONUtil.jsonEncode(result);
