@@ -16,8 +16,8 @@ import javax.swing.*;
 
 public class Server extends JFrame implements ActionListener {
 	
-        AllSessions sessions;
-	private static final Integer serverPort = 8080;
+        SessionsHandler sessions;
+        private static final Integer serverPort = 8080;
         private static ServerSocket server;
         private BufferedReader input;
         private PrintWriter output;
@@ -77,7 +77,7 @@ public class Server extends JFrame implements ActionListener {
 			       server.getLocalPort() + "\n");
             
                                 
-            sessions = new AllSessions();
+            sessions = new SessionsHandler();
             
             try {
                 while(true) {

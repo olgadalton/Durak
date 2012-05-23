@@ -9,7 +9,7 @@ import utils.JSONUtil;
 public class Gamer extends Thread {
 	
 	private Socket socket;
-	private AllSessions sessions;
+	private SessionsHandler sessions;
 	private BufferedReader netIn;
 	private PrintWriter netOut;
         private String clientName;
@@ -18,7 +18,7 @@ public class Gamer extends Thread {
             return clientName;
         }
 
-	public Gamer(Socket sock, AllSessions otherGamers) throws IOException {
+	public Gamer(Socket sock, SessionsHandler otherGamers) throws IOException {
 		super();
 		this.socket = sock;
 		this.sessions = otherGamers;

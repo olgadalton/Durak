@@ -5,11 +5,13 @@
 package constants;
 
 /**
- *
+ * 
  * @author Olga
  */
 public class Constants {
-    public static final int CardsCount = 36;
-    public static final int CardsPerPlayer = 6;
-    public static final int MinPlayersCount = 2;
+	public static final int CardsCount = 36;
+	public static final int CardsPerPlayer = 6;
+	public static final int MinPlayersCount = 2;
+	public static final int smallestValue = 6;
+	public static final int biggestValue = 14;
 }

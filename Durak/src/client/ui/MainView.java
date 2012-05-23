@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import client.GamerClient;
 import client.ui.LoginForm;
 import client.ui.WaitForPlayersView;
-import ui.game.GameView;
 
 /**
  *
